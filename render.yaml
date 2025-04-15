@@ -1,8 +1,49 @@
-# An excerpt from render.yaml
 services:
   - type: web
-    plan: free
-    runtime: image
-    name: n8n-service
-    image:
-      url: docker.io/n8nio/n8n:latest
+    name: n8n
+    env: docker
+    plan: free  # 或 "starter"（$7/月 不休眠）
+    autoDeploy: true
+
+    # 指定 GitHub repo
+    repo: https://github.com/n8n-io/n8n-render.git
+    branch: main
+
+    # 埠口設定
+    envVars:
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: "true"
+      - key: N8N_BASIC_AUTH_USER
+        value: youruser
+      - key: N8N_BASIC_AUTH_PASSWORD
+        value: yourpassword
+      - key: N8N_HOST
+        value: 0.0.0.0
+      - key: N8N_PORT
+        value: 5678
+      - key: N8N_PROTOCOL
+        value: https
+      - key: WEBHOOK_TUNNEL_URL
+        value: https://n8n-service-6r47.onrender.com
+
+      # Optional: 資料庫設定（若使用 Render PostgreSQL）
+      # - key: DB_TYPE
+      #   value: postgresdb
+      # - key: DB_POSTGRESDB_HOST
+      #   fromDatabase:
+      #     name: your-db-name
+      #     property: host
+      # - key: DB_POSTGRESDB_PORT
+      #   value: "5432"
+      # - key: DB_POSTGRESDB_DATABASE
+      #   fromDatabase:
+      #     name: your-db-name
+      #     property: database
+      # - key: DB_POSTGRESDB_USER
+      #   fromDatabase:
+      #     name: your-db-name
+      #     property: user
+      # - key: DB_POSTGRESDB_PASSWORD
+      #   fromDatabase:
+      #     name: your-db-name
+      #     property: password
